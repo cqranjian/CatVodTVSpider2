@@ -1,8 +1,5 @@
 package com.github.catvod.spider;
 
-import io.github.pixee.security.BoundedLineReader;
-import io.github.pixee.security.HostValidator;
-import io.github.pixee.security.Urls;
 import static java.lang.System.in;
 import static java.lang.System.out;
 
@@ -25,7 +22,6 @@ import com.github.catvod.net.OkHttp;
 import com.github.catvod.net.OkHttpUtil;
 import com.github.catvod.ui.ScrollTextView;
 import com.github.catvod.utils.Utils;
-import java.security.SecureRandom;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -120,7 +116,7 @@ public class Notice extends Spider {
     private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            Random random = new SecureRandom();
+            Random random = new Random();
             view.setTextColor(Color.argb(255, random.nextInt(128), random.nextInt(128), random.nextInt(128)));
             updateColor();
         }
@@ -143,12 +139,12 @@ public class Notice extends Spider {
         BufferedReader in = null;
         StringBuilder result = new StringBuilder();
         try {
-            URL url = Urls.create(siteurl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
+            URL url = new URL(siteurl);
             HttpURLConnection httpconn;
             HttpsURLConnection httpsconn;
             httpsconn = (HttpsURLConnection) url.openConnection();
 
-            if ("https".equals(url.getProtocol().toLowerCase())) {
+            if (url.getProtocol().toLowerCase().equals("https")) {
                 httpsconn.setHostnameVerifier(DO_NOT_VERIFY);
                 httpconn = httpsconn;
             } else {	//判断是https请求还是http请求
@@ -164,7 +160,7 @@ public class Notice extends Spider {
             httpconn.connect();
             in = new BufferedReader(new InputStreamReader(httpconn.getInputStream(), "UTF-8"));
             String line;
-            while ((line = BoundedLineReader.readLine(in, 5_000_000)) != null) {
+            while ((line = in.readLine()) != null) {
                 result.append(line);
             }
         } catch (Exception e) {

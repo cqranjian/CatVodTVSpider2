@@ -67,7 +67,7 @@ public class Data {
     }
 
     public boolean hasToken() {
-        return "CONFIRMED".equals(getQrCodeStatus()) && getBizExt().length() > 0;
+        return getQrCodeStatus().equals("CONFIRMED") && getBizExt().length() > 0;
     }
 
     public Map<String, String> getParams() {

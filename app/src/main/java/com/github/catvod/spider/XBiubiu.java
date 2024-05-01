@@ -70,7 +70,7 @@ public class XBiubiu extends Spider {
     public String homeVideoContent() {
         try {
             fetchRule();
-            if ("1".equals(getRuleVal("shouye"))) {
+            if (getRuleVal("shouye").equals("1")) {
                 JSONArray videos = new JSONArray();
                 String[] fenleis = getRuleVal("fenlei", "").split("#");
                 for (String fenlei : fenleis) {
@@ -100,19 +100,19 @@ public class XBiubiu extends Spider {
     private JSONObject category(String tid, String pg, boolean filter, HashMap<String, String> extend) {
         try {
             fetchRule();
-            if ("空".equals(tid))
+            if (tid.equals("空"))
                 tid = "";
             String qishiye = rule.optString("qishiye", "nil");
-            if ("空".equals(qishiye))
+            if (qishiye.equals("空"))
                 pg = "";
-            else if (!"nil".equals(qishiye)) {
+            else if (!qishiye.equals("nil")) {
                 pg = String.valueOf(Integer.parseInt(pg) - 1 + Integer.parseInt(qishiye));
             }
             String webUrl = getRuleVal("url") + tid + pg + getRuleVal("houzhui");
             String html = fetch(webUrl);
             html = removeUnicode(html);
             String parseContent = html;
-            boolean shifouercijiequ = "1".equals(getRuleVal("shifouercijiequ"));
+            boolean shifouercijiequ = getRuleVal("shifouercijiequ").equals("1");
             if (shifouercijiequ) {
                 String jiequqian = getRuleVal("jiequqian");
                 String jiequhou = getRuleVal("jiequhou");
@@ -191,7 +191,7 @@ public class XBiubiu extends Spider {
             String webUrl = idInfo[2].startsWith("x:") ? idInfo[2] : getRuleVal("url") + idInfo[2];
             String html = fetch(webUrl.startsWith("x:") ? webUrl.substring(2) : webUrl);
             String parseContent = html;
-            boolean bfshifouercijiequ = "1".equals(getRuleVal("bfshifouercijiequ"));
+            boolean bfshifouercijiequ = getRuleVal("bfshifouercijiequ").equals("1");
             if (bfshifouercijiequ) {
                 String jiequqian = getRuleVal("bfjiequqian");
                 String jiequhou = getRuleVal("bfjiequhou");
@@ -199,11 +199,11 @@ public class XBiubiu extends Spider {
             }
 
             ArrayList<String> playList = new ArrayList<>();
-            boolean playDirect = "1".equals(getRuleVal("直接播放"));
+            boolean playDirect = getRuleVal("直接播放").equals("1");
             if (!playDirect) {
                 String jiequshuzuqian = getRuleVal("bfjiequshuzuqian");
                 String jiequshuzuhou = getRuleVal("bfjiequshuzuhou");
-                boolean bfyshifouercijiequ = "1".equals(getRuleVal("bfyshifouercijiequ"));
+                boolean bfyshifouercijiequ = getRuleVal("bfyshifouercijiequ").equals("1");
                 ArrayList<String> jiequContents = subContent(parseContent, jiequshuzuqian, jiequshuzuhou);
                 for (int i = 0; i < jiequContents.size(); i++) {
                     try {
@@ -294,7 +294,7 @@ public class XBiubiu extends Spider {
                 }
             }else{
 
-                boolean xlshifouercijiequ = "1".equals(getRuleVal("xlshifouercijiequ"));
+                boolean xlshifouercijiequ = getRuleVal("xlshifouercijiequ").equals("1");
                 if (xlshifouercijiequ) {
                     String xljiequqian = getRuleVal("xljiequqian");
                     String xljiequhou = getRuleVal("xljiequhou");
@@ -351,7 +351,7 @@ public class XBiubiu extends Spider {
     public String searchContent(String key, boolean quick) {
         try {
             fetchRule();
-            boolean ssmoshiJson = "0".equals(getRuleVal("ssmoshi"));
+            boolean ssmoshiJson = getRuleVal("ssmoshi").equals("0");
             String webUrlTmp = getRuleVal("url") + getRuleVal("sousuoqian") + key + getRuleVal("sousuohou");
             String webUrl = webUrlTmp.split(";")[0];
             String webContent = webUrlTmp.contains(";post") ? fetchPost(webUrl) : fetch(webUrl);
@@ -377,7 +377,7 @@ public class XBiubiu extends Spider {
                 }
             } else {
                 String parseContent = webContent;
-                boolean shifouercijiequ = "1".equals(getRuleVal("sousuoshifouercijiequ"));
+                boolean shifouercijiequ = getRuleVal("sousuoshifouercijiequ").equals("1");
                 if (shifouercijiequ) {
                     String jiequqian = getRuleVal("ssjiequqian");
                     String jiequhou = getRuleVal("ssjiequhou");
@@ -465,7 +465,7 @@ public class XBiubiu extends Spider {
 
     private String getRuleVal(String key, String defaultVal) {
         String v = rule.optString(key);
-        if (v.isEmpty() || "空".equals(v))
+        if (v.isEmpty() || v.equals("空"))
             return defaultVal;
         return v;
     }

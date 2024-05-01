@@ -37,13 +37,13 @@ public class Ali extends Spider {
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) {
         String[] ids = id.split("\\+");
-        return "原畫".equals(flag) ? API.get().playerContent(ids) : API.get().playerContent(ids, flag);
+        return flag.equals("原畫") ? API.get().playerContent(ids) : API.get().playerContent(ids, flag);
     }
 
     public static Object[] proxy(Map<String, String> params) throws Exception {
         String type = params.get("type");
-        if ("sub".equals(type)) return API.get().proxySub(params);
-        if ("token".equals(type)) return API.get().getToken();
+        if (type.equals("sub")) return API.get().proxySub(params);
+        if (type.equals("token")) return API.get().getToken();
         return null;
     }
 }

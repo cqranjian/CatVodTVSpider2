@@ -9,7 +9,6 @@ import com.github.catvod.utils.CBC;
 import com.github.catvod.utils.gZip;
 import com.github.catvod.net.OKCallBack;
 import com.github.catvod.net.OkHttpUtil;
-import io.github.pixee.security.BoundedLineReader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -102,7 +101,7 @@ public class Ddys extends Spider {
             Map<String, List<String>> cookies = new HashMap<>();
             Document doc = Jsoup.parse(OkHttpUtil.string(url, getHeaders(url),cookies));
             for( Map.Entry<String, List<String>> entry : cookies.entrySet() ){
-                if("set-cookie".equals(entry.getKey())){
+                if(entry.getKey().equals("set-cookie")){
                     cookie = TextUtils.join(";",entry.getValue());
                     break;
                 }
@@ -112,20 +111,20 @@ public class Ddys extends Spider {
             ArrayList<String> allClass = new ArrayList<>();
             for (Element ele : elements) {
                 String name = ele.attr("title");
-                boolean show = !filter || ("热映中".equals(name)
-                        || "欧美剧".equals(name)
-                        || "日剧".equals(name)
-                        || "韩剧".equals(name)
-                        || "华语剧".equals(name)
-                        || "其他地区".equals(name)
-                        || "全部".equals(name)
-                        || "欧美电影".equals(name)
-                        || "日韩电影".equals(name)
-                        || "华语电影".equals(name)
-                        || "新番".equals(name)
-                        || "动画".equals(name)
-                        || "纪录片".equals(name)
-                        || "综艺".equals(name));
+                boolean show = !filter || (name.equals("热映中")
+                        || name.equals("欧美剧")
+                        || name.equals("日剧")
+                        || name.equals("韩剧")
+                        || name.equals("华语剧")
+                        || name.equals("其他地区")
+                        || name.equals("全部")
+                        || name.equals("欧美电影")
+                        || name.equals("日韩电影")
+                        || name.equals("华语电影")
+                        || name.equals("新番")
+                        || name.equals("动画")
+                        || name.equals("纪录片")
+                        || name.equals("综艺"));
                 if (allClass.contains(name))
                     show = false;
                 if (show) {
@@ -225,7 +224,7 @@ public class Ddys extends Spider {
                 url = siteUrl + "/category/" + tid;
             }
             ;
-            if ("1".equals(pg)) {
+            if (pg.equals("1")) {
                 url = url + "/";
             } else {
                 url = url + "/page/" + pg + "/";
@@ -503,7 +502,7 @@ public class Ddys extends Spider {
             BufferedReader br = new BufferedReader(new StringReader(vtt));
             ArrayList<String> lines = new ArrayList<>();
             int captionNumber = 1;
-            String line = BoundedLineReader.readLine(br, 5_000_000);
+            String line = br.readLine();
             while (line != null) {
                 if (line.matches("\\d{2}:\\d{2}:\\d{2}.\\d{3}.+\\d{2}:\\d{2}:\\d{2}.\\d{3}")) {
                     if (lines.get(lines.size() - 1).trim().isEmpty()) {
@@ -512,7 +511,7 @@ public class Ddys extends Spider {
                     }
                 }
                 lines.add(line);
-                line = BoundedLineReader.readLine(br, 5_000_000);
+                line = br.readLine();
             }
             String join = TextUtils.join("\n", lines);
 

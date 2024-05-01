@@ -109,9 +109,9 @@ public class XYQBiu extends Spider {
         String ua = getRuleVal("UserAgent", "okhttp/3.12.11").trim();
         if (ua.isEmpty()) {
             ua = "okhttp/3.12.11";
-        } else if ("PC_UA".equals(ua)) {
+        } else if (ua.equals("PC_UA")) {
             ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36";
-        } else if ("MOBILE_UA".equals(ua)) {
+        } else if (ua.equals("MOBILE_UA")) {
             ua = "Mozilla/5.0 (Linux; Android 11; Mi 10 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36";
         }
         headers.put("User-Agent", ua);
@@ -129,7 +129,7 @@ public class XYQBiu extends Spider {
     public String homeVideoContent() {
         try {
             fetchRule();
-            if ("1".equals(getRuleVal("homeContent"))) {
+            if (getRuleVal("homeContent").equals("1")) {
                 JSONArray videos = new JSONArray();
                 String[] fenleis = getRuleVal("class_value", "").split("&");
                 for (String fenlei : fenleis) {
@@ -160,7 +160,7 @@ public class XYQBiu extends Spider {
             fetchRule();
             String fistpg = String.valueOf(Integer.parseInt(getRuleVal("firstpage", "1")));
             ////页码
-            if ("0".equals(fistpg)) {
+            if (fistpg.equals("0")) {
                 pg = String.valueOf(Integer.parseInt(pg) - 1 * 1);
             } else {
                 pg = String.valueOf(Integer.parseInt(pg) - 1 + Integer.parseInt(getRuleVal("firstpage", "1")));
@@ -168,7 +168,7 @@ public class XYQBiu extends Spider {
             //web链接
             String webUrl = getRuleVal("class_url");
             if (webUrl.contains("firstPage=")) {
-                if ("1".equals(pg)) {
+                if (pg.equals("1")) {
                     webUrl = webUrl.split("\\[firstPage=")[1].split("\\]")[0];
                 } else {
                     webUrl = webUrl.split("\\[firstPage=")[0];
@@ -233,8 +233,8 @@ public class XYQBiu extends Spider {
             String parseContent = html;
             String mark = "";
             String pic = "";
-            boolean fenleiJson = "0".equals(getRuleVal("cat_mode"));
-            boolean picneetproxy = "1".equals(getRuleVal("PicNeedProxy"));
+            boolean fenleiJson = getRuleVal("cat_mode").equals("0");
+            boolean picneetproxy = getRuleVal("PicNeedProxy").equals("1");
 
             JSONArray videos = new JSONArray();
             JSONObject result = new JSONObject();
@@ -283,7 +283,7 @@ public class XYQBiu extends Spider {
                     }
                 }
             } else {
-                boolean shifouercijiequ = "1".equals(getRuleVal("cat_YN_twice"));
+                boolean shifouercijiequ = getRuleVal("cat_YN_twice").equals("1");
                 if (shifouercijiequ) {
                     String jiequqian = getRuleVal("cat_twice_pre");
                     String jiequhou = getRuleVal("cat_twice_suf");
@@ -366,8 +366,8 @@ public class XYQBiu extends Spider {
             ArrayList<String> playList = new ArrayList<>();
             ArrayList<String> playFrom = new ArrayList<>();
             boolean isMagnet = false;
-            boolean zhijiebofang = "1".equals(getRuleVal("force_play"));
-            boolean picneetproxy = "1".equals(getRuleVal("PicNeedProxy"));
+            boolean zhijiebofang = getRuleVal("force_play").equals("1");
+            boolean picneetproxy = getRuleVal("PicNeedProxy").equals("1");
             try {
                 if (picneetproxy) {
                     cover = fixCover(cover, webUrl);
@@ -388,7 +388,7 @@ public class XYQBiu extends Spider {
 //                html = jumpbtwaf(webUrl,html);//5秒盾
                 html = convertUnicodeToCh(html);
                 String parseContent = html;
-                boolean bfshifouercijiequ = "1".equals(getRuleVal("list_YN_twice"));
+                boolean bfshifouercijiequ = getRuleVal("list_YN_twice").equals("1");
                 if (bfshifouercijiequ) {
                     String jiequqian = getRuleVal("list_twice_pre");
                     String jiequhou = getRuleVal("list_twice_suf");
@@ -397,7 +397,7 @@ public class XYQBiu extends Spider {
 
                 String jiequshuzuqian = getRuleVal("list_arr_pre");
                 String jiequshuzuhou = getRuleVal("list_arr_suf");
-                boolean bfyshifouercijiequ = "1".equals(getRuleVal("epi_YN_twice"));
+                boolean bfyshifouercijiequ = getRuleVal("epi_YN_twice").equals("1");
                 ArrayList<String> jiequContents = subContent(parseContent, jiequshuzuqian, jiequshuzuhou);
                 for (int i = 0; i < jiequContents.size(); i++) {
                     try {
@@ -430,7 +430,7 @@ public class XYQBiu extends Spider {
                 //没有线路规则代码时
                 if (!getRuleVal("tab_title").isEmpty() && !getRuleVal("tab_arr_pre").isEmpty()) {
                     //代码取线路名
-                    boolean xlshifouercijiequ = "1".equals(getRuleVal("tab_YN_twice"));
+                    boolean xlshifouercijiequ = getRuleVal("tab_YN_twice").equals("1");
                     if (xlshifouercijiequ) {
                         String xljiequqian = getRuleVal("tab_twice_pre");
                         String xljiequhou = getRuleVal("tab_twice_suf");
@@ -509,9 +509,9 @@ public class XYQBiu extends Spider {
             String webua = getRuleVal("UserAgent", "okhttp/3.12.11").trim();
             if (webua.isEmpty()) {
                 webua = "okhttp/3.12.11";
-            } else if ("PC_UA".equals(webua)) {
+            } else if (webua.equals("PC_UA")) {
                 webua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36";
-            } else if ("MOBILE_UA".equals(webua)) {
+            } else if (webua.equals("MOBILE_UA")) {
                 webua = "Mozilla/5.0 (Linux; Android 11; Mi 10 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Mobile Safari/537.36";
             }
             webheaders.put("User-Agent", webua);
@@ -520,14 +520,14 @@ public class XYQBiu extends Spider {
                 String webref = getRuleVal("Referer").trim();
                 if (webref.startsWith("http")) {
                     webheaders.put("Referer", webref);
-                } else if ("WebView".equals(webref)) {
+                } else if (webref.equals("WebView")) {
                     webheaders.put("Referer", webUrl);
                 }
             }
             //嗅探请求头结束
 
             JSONObject result = new JSONObject();
-            boolean enforceplay = ("1".equals(getRuleVal("force_play")) || "2".equals(getRuleVal("force_play")));
+            boolean enforceplay = (getRuleVal("force_play").equals("1") || getRuleVal("force_play").equals("2"));
             //强制视频链接
             if (enforceplay) {
                 webUrl = getRuleVal("play_prefix", "") + webUrl + getRuleVal("play_suffix", "");
@@ -572,7 +572,7 @@ public class XYQBiu extends Spider {
 
             //普通链接开始
             //分析mac链接解析
-            boolean enMacPlayer = "1".equals(getRuleVal("Anal_MacPlayer"));
+            boolean enMacPlayer = getRuleVal("Anal_MacPlayer").equals("1");
             String videoUrl = null;
             String fromflag = null;
 
@@ -655,7 +655,7 @@ public class XYQBiu extends Spider {
     @Override
     public boolean manualVideoCheck() {
         fetchRule();
-        if ("1".equals(getRuleVal("ManualSniffer"))) {
+        if (getRuleVal("ManualSniffer").equals("1")) {
             return true;
         } else {
             return false;
@@ -733,8 +733,8 @@ public class XYQBiu extends Spider {
 
             String mark = "";
             String pic = "";
-            boolean ssmoshiJson = "0".equals(getRuleVal("search_mode"));
-            boolean picneetproxy = "1".equals(getRuleVal("PicNeedProxy"));
+            boolean ssmoshiJson = getRuleVal("search_mode").equals("0");
+            boolean picneetproxy = getRuleVal("PicNeedProxy").equals("1");
 
             JSONObject result = new JSONObject();
             JSONArray videos = new JSONArray();
@@ -784,7 +784,7 @@ public class XYQBiu extends Spider {
                 }
             } else {
                 String parseContent = webContent;
-                boolean shifouercijiequ = "1".equals(getRuleVal("sea_YN_twice"));
+                boolean shifouercijiequ = getRuleVal("sea_YN_twice").equals("1");
                 if (shifouercijiequ) {
                     String jiequqian = getRuleVal("sea_twice_pre");
                     String jiequhou = getRuleVal("sea_twice_suf");
@@ -880,7 +880,7 @@ public class XYQBiu extends Spider {
 
     private String getRuleVal(String key, String defaultVal) {
         String v = rule.optString(key);
-        if (v.isEmpty() || "空".equals(v) || "&&".equals(v))
+        if (v.isEmpty() || v.equals("空") || v.equals("&&"))
             return defaultVal;
         return v;
     }
@@ -997,7 +997,7 @@ public class XYQBiu extends Spider {
                     Map<String, List<String>> cookies = new HashMap<>();
                     OkHttpUtil.string(bturl, getHeaders(webUrl), cookies);
                     for (Map.Entry<String, List<String>> entry : cookies.entrySet()) {
-                        if ("set-cookie".equals(entry.getKey()) || "Set-Cookie".equals(entry.getKey())) {
+                        if (entry.getKey().equals("set-cookie") || entry.getKey().equals("Set-Cookie")) {
                             String btcookie = TextUtils.join(";", entry.getValue());
                             if (!rule.has("header")) {
                                 rule.put("header", new JSONObject());

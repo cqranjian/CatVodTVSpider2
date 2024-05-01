@@ -16,7 +16,6 @@ import com.github.catvod.utils.Misc;
 import com.github.catvod.utils.gZip;
 import com.github.catvod.net.OKCallBack;
 import com.github.catvod.net.OkHttpUtil;
-import java.security.SecureRandom;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,7 +76,7 @@ public class Bdys01 extends Spider {
     protected HashMap<String, String> getHeaders(String url,String ref) {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36");
-        if(!"google".equals(ref)){
+        if(!ref.equals("google")){
             headers.put("Authority", "www.bdys01.com");
             if(ref.length()>0){
                 headers.put("Referer", ref);
@@ -185,7 +184,7 @@ public class Bdys01 extends Spider {
             String url = siteUrl + "/s/" ;
             if (extend != null && extend.size() > 0 ) {
                 String urlformat= "";
-                if("a".equals(tid)){
+                if(tid.equals("a")){
                     urlformat= url +"{s}/"+ pg +"?&area={area}&year={year}&order={order}";
                 }else {
                     urlformat= url +"{s}/"+ pg +"?&type="+tid+"&area={area}&year={year}&order={order}";
@@ -210,7 +209,7 @@ public class Bdys01 extends Spider {
                 }
                 url = urlformat;
             } else {
-                if("a".equals(tid)){
+                if(tid.equals("a")){
                     url += "all/" + pg + "?&order=0";
                 }else {
                     url += "all/" + pg + "?&type=" + tid + "&order=0";
@@ -231,7 +230,7 @@ public class Bdys01 extends Spider {
                 for (int i = 0; i < pageInfo.size(); i++) {
                     Element a = pageInfo.get(i);
                     String name = a.text();
-                    if ("尾页".equals(name)) {
+                    if (name.equals("尾页")) {
                         String gg =a.attr("href");
                         String hf ="";
                         if(gg.contains("JSESSIONID")){
@@ -313,7 +312,7 @@ public class Bdys01 extends Spider {
             for (int i = 0; i < allp.size(); i++) {
                 Element text = allp.get(i);
                 String info = text.selectFirst("strong").text();
-                if ("类型：".equals(info)) {
+                if (info.equals("类型：")) {
                     List<String> categorys = new ArrayList<>();
                     Elements aa = text.select("a");
                     for (int j = 0; j < aa.size(); j++) {
@@ -438,7 +437,7 @@ public class Bdys01 extends Spider {
                     urldblist.add(m2[i].replace("www.bde4.cc","www.bdys01.com"));
                 }
             }
-            int index =new SecureRandom().nextInt(urldblist.size());
+            int index =new Random().nextInt(urldblist.size());
             String videourl = urldblist.get(index);
             if(videourl.contains("mp4")){
                 result.put("parse", 0);

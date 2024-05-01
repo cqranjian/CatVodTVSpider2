@@ -11,7 +11,6 @@ import com.github.catvod.utils.CBC;
 import com.github.catvod.utils.gZip;
 import com.github.catvod.net.OKCallBack;
 import com.github.catvod.net.OkHttpUtil;
-import io.github.pixee.security.BoundedLineReader;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -128,7 +127,7 @@ public class Czsapp extends Spider {
             BufferedReader br = new BufferedReader(new StringReader(vtt));
             ArrayList<String> lines = new ArrayList<>();
             int captionNumber = 1;
-            String line = BoundedLineReader.readLine(br, 5_000_000);
+            String line = br.readLine();
             while (line != null) {
                 if (line.matches("\\d{2}:\\d{2}:\\d{2}.\\d{3}.+\\d{2}:\\d{2}:\\d{2}.\\d{3}")) {
                     if (lines.get(lines.size() - 1).trim().isEmpty()) {
@@ -137,7 +136,7 @@ public class Czsapp extends Spider {
                     }
                 }
                 lines.add(line);
-                line = BoundedLineReader.readLine(br, 5_000_000);
+                line = br.readLine();
             }
             String join = TextUtils.join("\n", lines);
 
@@ -212,17 +211,17 @@ public class Czsapp extends Spider {
                     try {
                         String substring = trim2.substring(0, 2);
                         String substring2 = trim2.substring(3);
-                        if ("类型".equals(substring)) {
+                        if (substring.equals("类型")) {
                             str3 = substring2;
-                        } else if ("地区".equals(substring)) {
+                        } else if (substring.equals("地区")) {
                             str5 = substring2;
-                        } else if ("年份".equals(substring)) {
+                        } else if (substring.equals("年份")) {
                             str4 = substring2;
-                        } else if ("导演".equals(substring)) {
+                        } else if (substring.equals("导演")) {
                             str8 = substring2;
-                        } else if ("主演".equals(substring)) {
+                        } else if (substring.equals("主演")) {
                             str7 = substring2;
-                        } else if ("豆瓣".equals(substring)) {
+                        } else if (substring.equals("豆瓣")) {
                             str6 = substring2;
                         }
                     } catch (Exception e) {

@@ -295,9 +295,9 @@ public class API {
         if (marker.length() > 0) body.put("marker", marker);
         Item item = Item.objectFrom(auth("adrive/v3/file/list", body.toString(), true));
         for (Item file : item.getItems()) {
-            if ("folder".equals(file.getType())) {
+            if (file.getType().equals("folder")) {
                 folders.add(file);
-            } else if ("video".equals(file.getCategory()) || "audio".equals(file.getCategory())) {
+            } else if (file.getCategory().equals("video") || file.getCategory().equals("audio")) {
                 files.add(file.parent(parent.getName()));
             } else if (Utils.isSub(file.getExt())) {
                 subs.add(file);

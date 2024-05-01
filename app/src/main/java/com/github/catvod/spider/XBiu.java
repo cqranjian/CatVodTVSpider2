@@ -10,8 +10,6 @@ import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.utils.Misc;
 import com.github.catvod.net.OKCallBack;
 import com.github.catvod.net.OkHttpUtil;
-import io.github.pixee.security.HostValidator;
-import io.github.pixee.security.Urls;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -164,7 +162,7 @@ public class XBiu extends Spider {
                     // 初始化homeUrl,list.url
                     String homeUrl= rule.getString("homeUrl");
                     if(homeUrl.indexOf("{cateId}") != -1){
-                        URL r = Urls.create(homeUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
+                        URL r = new URL(homeUrl);
                         String path =  r.getPath();
                         // 更新解析出来的homeUrl
                         rule.put("homeUrl", homeUrl.substring(0, homeUrl.indexOf(path)));
@@ -519,7 +517,7 @@ public class XBiu extends Spider {
                 while (iter.hasNext()) {
                     String key = (String) iter.next();
                     Object val = obj.get(key);
-                    if ("JSONArray".equals(val.getClass().getSimpleName())) {
+                    if (val.getClass().getSimpleName().equals("JSONArray")) {
                         int c = getLookbackCount((JSONArray) val);
                         if (c > 0) return (JSONArray) val;
                     }
@@ -1209,9 +1207,9 @@ public class XBiu extends Spider {
                 String s = rule_vod_play_from.get(i).getClass().getSimpleName();
                 String key = "";
                 String alias = "";
-                if ("String".equals(s)) {
+                if (s.equals("String")) {
                     key = alias = rule_vod_play_from.getString(i);
-                } else if ("JSONArray".equals(s)) {
+                } else if (s.equals("JSONArray")) {
                     JSONArray item = rule_vod_play_from.getJSONArray(i);
                     key = alias = item.getString(0);
                     if (item.length() > 1) {
@@ -1568,9 +1566,9 @@ public class XBiu extends Spider {
                 for (int i = 0; i < rule_vod_play_from.length(); ++i) {
                     String s = rule_vod_play_from.get(i).getClass().getSimpleName();
                     String alias = "";
-                    if ("String".equals(s)) {
+                    if (s.equals("String")) {
                         alias = rule_vod_play_from.getString(i);
-                    } else if ("JSONArray".equals(s)) {
+                    } else if (s.equals("JSONArray")) {
                         JSONArray item = rule_vod_play_from.getJSONArray(i);
                         alias = item.getString(0);
                         if (item.length() > 1) {
@@ -1663,7 +1661,7 @@ public class XBiu extends Spider {
             String key_vod_id = search.getString("vod_id");
             String key_vod_name = search.getString("vod_name");
             String type = obj.getClass().getSimpleName();
-            if ("JSONObject".equals(type)) {
+            if (type.equals("JSONObject")) {
                 JSONObject object = (JSONObject) obj;
                 if (object.has(key_vod_id) && object.has(key_vod_name)) return object;
                 for (Iterator<String> iter = object.keys(); iter.hasNext(); ) {
@@ -1673,7 +1671,7 @@ public class XBiu extends Spider {
                         return r;
                     }
                 }
-            } else if ("JSONArray".equals(type)) {
+            } else if (type.equals("JSONArray")) {
                 JSONArray array = (JSONArray) obj;
                 for (int i = 0; i < array.length(); ++i) {
                     if (parseJsonSearchResult(array.get(i)) != null) {
@@ -1694,7 +1692,7 @@ public class XBiu extends Spider {
             Object info = parseJsonSearchResult(obj);
             if (info == null) return "";
             JSONArray arr = new JSONArray();
-            if ("JSONObject".equals(info.getClass().getSimpleName())) {
+            if (info.getClass().getSimpleName().equals("JSONObject")) {
                 arr.put(info);
             } else {
                 arr = (JSONArray) info;
@@ -1913,7 +1911,7 @@ public class XBiu extends Spider {
                 Map<String, List<String>> cookies = new HashMap<>();
                 OkHttpUtil.string(bturl, getHeaders(webUrl), cookies);
                 for (Map.Entry<String, List<String>> entry : cookies.entrySet()) {
-                    if ("set-cookie".equals(entry.getKey()) || "Set-Cookie".equals(entry.getKey())) {
+                    if (entry.getKey().equals("set-cookie") || entry.getKey().equals("Set-Cookie")) {
                         String btcookie = TextUtils.join(";", entry.getValue());
                         if (!rule.has("header")) {
                             rule.put("header", new JSONObject());
